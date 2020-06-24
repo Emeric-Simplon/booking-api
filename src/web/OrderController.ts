@@ -1,5 +1,5 @@
 import {Body, Controller, Post, Get, Params} from 'routing-controllers';
-import {Product} from "../entity/Product";
+import { Hotel} from "../entity/Hotel";
 import {Connection} from 'typeorm/connection/Connection';
 
 import {Connect} from "../bdd/Connect";
@@ -51,18 +51,18 @@ export class OrderController {
       await orderRepository.save(order);  //commande crée et sauvegardé
 
       let total = 0;
-      let productRepository = connection.getRepository(Product);
+      let productRepository = connection.getRepository(Hotel);
       let orderItemRepository = connection.getRepository(OrderItem);
 
       for(let i=0 ; i<body.products.length ; i++){
           let orderItem = new OrderItem();            //on crée une commande minifiée
           orderItem.order = order;                    //association avec la commande en cours
-          let product:Product = await productRepository.findOne(body.products[i].id); //on récupère le produit correspondant
-          orderItem.product = product;                //association avec le produit correspondant 
-          orderItem.price = body.products[i].price;                  //insertion du prix envoyé
-          orderItem.quantity = body.products[i].quantity;            //insertion de la quantité envoyé
+          let hotel:Hotel = await productRepository.findOne(body.hotels[i].id); //on récupère le produit correspondant
+          orderItem.hotel = hotel;                //association avec le produit correspondant 
+          orderItem.price = body.hotels[i].price;                  //insertion du prix envoyé
+          orderItem.quantity = body.hotels[i].quantity;            //insertion de la quantité envoyé
           orderItemRepository.save(orderItem);        //sauvegarde d'une commande minifiée
-          total += body.products[i].quantity * product.currentPrice; 
+          total += body.hotels[i].quantity * hotel.currentPrice; 
       }
       
       order.totalAmount = total;

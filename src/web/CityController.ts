@@ -1,11 +1,11 @@
 import {Body, Controller, Get, Post, Delete, Put, Req, Res, Params} from 'routing-controllers';
-import {Category} from "../entity/Category";
+import {City} from "../entity/City";
 import {Connection} from 'typeorm/connection/Connection';
 
 import {Connect} from "../bdd/Connect";
 
 @Controller()
-export class CategoryController {
+export class CityController {
 
   connection: Promise<Connection>;
 
@@ -15,14 +15,14 @@ export class CategoryController {
     //this.connection = createConnection();
   }
 
-  @Get("/categories/:id")          
+  @Get("/cities/:id")          
   async Get(@Params() id:number){
     try {
       const connection = await this.connection;
-      let categoryRepository = connection.getRepository(Category);
-      let category = await categoryRepository.findOne(id);
-      if(category)    return category;    
-      else return "category not in db";
+      let cityRepository = connection.getRepository(City);
+      let city = await cityRepository.findOne(id);
+      if(city)    return city;    
+      else return "City not in db";
     }
     catch(Error){
       console.log(Error.message);
@@ -30,16 +30,16 @@ export class CategoryController {
     }
   }
 
-  @Get("/categories/:id/products")          
+  @Get("/cities/:id/hotels")          
   async getProductsByCat(@Params() id:number){
     try {
       const connection = await this.connection;
-      let products = await connection.createQueryBuilder()
-                    .relation(Category, "products")
+      let hotels = await connection.createQueryBuilder()
+                    .relation(City, "hotels")
                     .of(id) 
                     .loadMany();
-      if(products)    return products;
-      else return "products of this category not in db";
+      if(hotels)    return hotels;
+      else return "hotels of this City not in db";
     }
     catch(Error){
       console.log(Error.message);
@@ -47,34 +47,34 @@ export class CategoryController {
     }
   }
 
-  @Get("/categories")
+  @Get("/cities")
   async getAll(@Req() request: any, @Res() response: any) {
     try {
       const connection = await this.connection;
-      let categoryRepository = connection.getRepository(Category);
-      let categories = categoryRepository.find();
-      if(categories)  return categories;
-      else return "table of categories empty in db";
+      let cityRepository = connection.getRepository(City);
+      let cities = cityRepository.find();
+      if(cities)  return cities;
+      else return "table of cities empty in db";
     }
     catch(Error){
       console.log(Error.message);
       return Error.message;
     }
   }
-/*
-  @Post("/category")
-  async post(@Body() body: any) {   //ToDO : test si tous les param ne sont présent dans body ?
-    const category = new Category(body.name,body.description,body.products);    
-    const connection = await this.connection;
-    let categoryRepository = connection.getRepository(Category);
-    await categoryRepository.save(category);
-    return category;
-  }
 
-  @Put("/category/:id")
+  @Post("/city")
+  async post(@Body() body: any) {  
+    const city = new City(body.name,body.hotels);    
+    const connection = await this.connection;
+    let categoryRepository = connection.getRepository(City);
+    await categoryRepository.save(city);
+    return city;
+  }
+/*
+  @Put("/City/:id")
   async put(@Body() body: any, @Params()id:number){
     const connection = await this.connection;
-    let categoryRepository = connection.getRepository(Category);
+    let categoryRepository = connection.getRepository(City);
 
     let newCategory = await categoryRepository.findOne(body.id);
     newCategory.name = body.name;
@@ -84,11 +84,11 @@ export class CategoryController {
     return newCategory;   
   }
 
-  @Delete("/category/:id")
+  @Delete("/City/:id")
   async delete(@Params() id:number){
     const connection = await this.connection;
-    let categoryRepository = connection.getRepository(Category);
-    let category = await categoryRepository.delete(id);
-    return category;    
+    let categoryRepository = connection.getRepository(City);
+    let City = await categoryRepository.delete(id);
+    return City;    
   }*/
 }

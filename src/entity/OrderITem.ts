@@ -1,6 +1,6 @@
 import {Entity, Column, PrimaryGeneratedColumn, ManyToOne} from "typeorm";
-import { Product } from "./Product";
 import { Order } from "./Order";
+import { Hotel } from "./Hotel";
 
 @Entity('orderitems')
 export class OrderItem {
@@ -11,8 +11,8 @@ export class OrderItem {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(type => Product, product => product.orderItems)
-    product : Product;
+    @ManyToOne(type => Hotel, hotel => hotel.orderItems)
+    hotel : Hotel;
 
     @Column("int")
     quantity: number;

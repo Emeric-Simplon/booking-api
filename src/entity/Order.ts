@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, OneToOne} from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
 import { OrderItem } from "./OrderITem";
 import { Customer } from "./Customer";
 import { Payment } from "./Payment";
@@ -6,8 +6,8 @@ import { Payment } from "./Payment";
 @Entity('orders')
 export class Order {
 
-    constructor(){        
-    } 
+    constructor() {
+    }
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -23,7 +23,7 @@ export class Order {
 
     @ManyToOne(type => Customer, customer => customer.orders)
     customer: Customer;
- 
+
     @OneToOne(type => Payment, payment => payment.order)
-    payment : Payment; 
+    payment: Payment;
 }
